@@ -3,6 +3,7 @@ import {Box,Stack,Button,Text, Badge,ButtonGroup} from '@chakra-ui/react'
 import {useNavigate,useLocation} from "react-router-dom"
 import { ROUTER } from '../Constant/router'
 import { useGlobalStore } from '../Store/global/GlobalProvider'
+import { useQueryClient } from 'react-query'
  function Header() {
 
     const navigate = useNavigate()
@@ -10,6 +11,11 @@ import { useGlobalStore } from '../Store/global/GlobalProvider'
     const {state} = useGlobalStore()
 
     const {pathname} = useLocation()
+
+    const querryClient = useQueryClient()
+
+    const articles = querryClient.getQueryData(["blogs"])?.data
+    console.log("articles", articles);
 
     const isActive = (p) => (pathname == p ? "orange" : "white")
 
@@ -34,6 +40,9 @@ import { useGlobalStore } from '../Store/global/GlobalProvider'
   </Button>
   <Button as='li'  variant='ghost' color={isActive(ROUTER.ARTICLES)} onClick={()=>navigate(ROUTER.ARTICLES)}>
     Article
+    {!!articles?.length && (
+    <Badge variant="solid" colorScheme='red'>{articles?.length}</Badge>
+  )} 
   </Button>
   <Button as='li' variant='ghost' color={isActive(ROUTER.ABOUT)} onClick={()=>navigate(ROUTER.ABOUT)}>
     About

@@ -5,6 +5,7 @@ import App from './App.jsx'
 import "./Styles/global.css"
 import { BrowserRouter } from "react-router-dom"
 import GlobalProvider from './Store/global/GlobalProvider.jsx'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 const colors = {
   brand: {
@@ -13,7 +14,7 @@ const colors = {
     700: '#2a69ac',
   },
 }
-
+const queryClient = new QueryClient()
 const theme = extendTheme({ colors })
 
 const rootElement = document.getElementById('root')
@@ -21,9 +22,11 @@ ReactDOM.createRoot(rootElement).render(
   
     <ChakraProvider theme={theme}>
       <BrowserRouter>
+      <QueryClientProvider client={queryClient}>
       <GlobalProvider>
       <App />
       </GlobalProvider>
+      </QueryClientProvider>
       </BrowserRouter>
     </ChakraProvider>
   

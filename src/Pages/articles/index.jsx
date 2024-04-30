@@ -9,6 +9,7 @@ import { useFetchData } from '../../Hooks/useFetchData'
 import Loading from '../Loading'
 import Searchbox from '../../Components/SearchBox/searchbox'
 import { useTitle } from '../../Hooks/useTitle'
+import { useQuery } from 'react-query'
 
 
 function Articles() {
@@ -17,21 +18,30 @@ function Articles() {
 
   useTitle("Article | Blog app")
 
-
-  const {data,loading} = useFetchData({
-    requestFn:()=>getBlogs(),
+  const {data,isLoading} = useQuery({
+    queryKey:["blogs"],
+    queryFn: getBlogs, 
+    refetchInterval:false, 
+    refetchOnWindowFocus:false,
+    refetchOnReconnect:true 
   })
+  // console.log(query);
+
+  // const {data,loading} = useFetchData({
+  //   requestFn:()=>getBlogs(),
+  // })
 
 
   useEffect(()=>{
 
-    setSearchData(data);
+      setSearchData(data?.data);
+    
   },[data])
 
   const handleSearch = (text) =>{
 
     if(!text.trim()){
-      setSearchData(data);
+      setSearchData(data.data);
       return
     }
     const filterData = searchData.filter((item)=>
@@ -49,9 +59,9 @@ function Articles() {
       <Header />
       <Box  px={50}>
       <Breadcrumbs/>
-     <Searchbox onFocus={()=>setSearchData(data)}  onSearch={handleSearch} />
+     <Searchbox onFocus={()=>setSearchData(data.data)}  onSearch={handleSearch} />
       </Box>
-      {loading  ? (
+      {isLoading  ? (
       <Loading />
        ):( 
       <SimpleGrid columns={{sm: 2}} p="20" spacing="10">

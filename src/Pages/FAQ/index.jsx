@@ -9,136 +9,51 @@ import {
 } from '@chakra-ui/react'
 import Header from '../../Components/Header'
 import { useTitle } from '../../Hooks/useTitle'
+import { getFaqs } from '../../Services/faq'
+import { useFetchData } from '../../Hooks/useFetchData'
+import Loading from '../Loading'
 
 
 function Faq() {
 
   useTitle("FAQ | Blog app")
 
-  useEffect(() => {},[])
+  const {data, loading} = useFetchData({requestFn: () => getFaqs()})
+
+  // useEffect(() => {
+  //   const fetchData = async ()=>{
+  //     const data = await getFaqs()
+
+  //     console.log(data);
+  //   }
+  //   fetchData()
+  // },[])
+
+  if(loading){
+     
+    return <Loading/>
+  }
 
   return (
     <div>
       <Header/> 
       <Accordion p="60px">
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box as='span' flex='1' textAlign='left'>
-          Section 1 title
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </AccordionPanel>
-  </AccordionItem>
 
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box as='span' flex='1' textAlign='left'>
-          Section 2 title
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </AccordionPanel>
-  </AccordionItem>
-
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box as='span' flex='1' textAlign='left'>
-          Section 3 title
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </AccordionPanel>
-  </AccordionItem>
-
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box as='span' flex='1' textAlign='left'>
-          Section 4 title
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </AccordionPanel>
-  </AccordionItem>
-
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box as='span' flex='1' textAlign='left'>
-          Section 5 title
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </AccordionPanel>
-  </AccordionItem>
-
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box as='span' flex='1' textAlign='left'>
-          Section 6 title
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </AccordionPanel>
-  </AccordionItem>
-
-  <AccordionItem>
-    <h2>
-      <AccordionButton>
-        <Box as='span' flex='1' textAlign='left'>
-          Section 7 title
-        </Box>
-        <AccordionIcon />
-      </AccordionButton>
-    </h2>
-    <AccordionPanel pb={4}>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-      tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-      veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-      commodo consequat.
-    </AccordionPanel>
-  </AccordionItem>
+        {data?.faqs?.map((faq)=>(
+          <AccordionItem key={ "faq-id"+ faq?.id}>
+          <h2>
+            <AccordionButton>
+              <Box as='span' flex='1' textAlign='left'>
+                {faq?.title}
+              </Box>
+              <AccordionIcon />
+            </AccordionButton>
+          </h2>
+          <AccordionPanel pb={4}>
+            {faq?.desc}
+          </AccordionPanel>
+        </AccordionItem>
+        ))}
 </Accordion>
     </div>
   )

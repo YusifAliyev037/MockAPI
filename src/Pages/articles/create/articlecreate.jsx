@@ -175,7 +175,7 @@ const defaultImg = "https://www.fivebranches.edu/wp-content/uploads/2021/08/defa
             <Select name="category" onChange={handleChange}>
               <option selected>Select category</option>
               {categories?.map((item, index) => (
-                <option value={item.id}>{item.title}</option>
+                <option key={index} value={item.id}>{item.title}</option>
               ))}
             </Select>
           </FormControl>
