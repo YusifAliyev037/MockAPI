@@ -1,0 +1,1 @@
+import{j as n,S as r}from"./index-i8j6Sevi.js";import{B as s}from"./Header-DN-6gpC8.js";function i(){return n.jsx(s,{display:"flex",justifyContent:"center",p:50,children:n.jsx(r,{size:"lg"})})}export{i as L};

@@ -1,0 +1,1 @@
+import{j as t}from"./index-i8j6Sevi.js";import{u as o}from"./useTitle-DtOMNZN_.js";import{T as e}from"./chunk-2OOHT3W5-DLAaga7y.js";function a(){return o("NotFound | Blog app"),t.jsx("div",{children:t.jsx(e,{bgGradient:"linear(to-l, #7928CA, #FF0080)",bgClip:"text",fontSize:"6xl",fontWeight:"extrabold",children:"404page"})})}export{a as default};
