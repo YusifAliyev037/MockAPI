@@ -11,21 +11,34 @@ import { useGlobalStore } from '../../../Store/global/GlobalProvider'
 import { TYPES } from '../../../Store/global/type'
 import Breadcrumbs from '../../../Components/Breadcrumb'
 import { useTitle } from '../../../Hooks/useTitle'
+import { useQuery } from 'react-query'
 
  function Articledetail() {
 
   const {id} = useParams()
 
-  useTitle(`Detail | Blog app`)
+  const {data,isFetching} = useQuery({
+    // queryKey:["blogs",id],
+    queryKey:["blog_detail"],
+    requestFn:()=>getBlogId(id),
+    refetchInterval:false, 
+    refetchOnWindowFocus:false,
+    refetchOnReconnect:true 
+  })
+  const articleItem =data?.data
+  useTitle(`${articleItem?.title} | Blog app`)
 
 
   const {state, dispatch} = useGlobalStore()
   console.log(state.favorites);
+
+
   
-  const {data,loading} = useFetchData({
-    requestFn:()=>getBlogId(id),
-    dependecy:[id]
-  })
+  // const {data,loading} = useFetchData({
+  //   requestFn:()=>getBlogId(id),
+  //   dependecy:[id]
+  // })
+
 
   const isFav = state.favorites.find((item)=> item.id == id);
   // console.log(isFav);
@@ -43,12 +56,12 @@ import { useTitle } from '../../../Hooks/useTitle'
   return (
     <>
       <Header />
-      <Breadcrumbs routes={["Articles", data?.title]}/>
-      {loading ? (<Loading />): (
+      <Breadcrumbs routes={["Articles", articleItem?.title]}/>
+      {isFetching ? (<Loading />): (
 
       <SimpleGrid bg="gray.50" columns={{sm:2}} spacing="2" p="10" >
       <Box>
-          <Image  src={data?.cover_url} alt={data?.title}></Image>
+          <Image  src={articleItem?.cover_url} alt={articleItem?.title}></Image>
         </Box>
         <Box display="flex" flexDirection="column" justifyContent="flex-start" gap="16px">
         <Text
@@ -57,7 +70,7 @@ import { useTitle } from '../../../Hooks/useTitle'
           fontWeight="medium"
           color="gray"
         >
-             {converTime(+data?.created)}
+             {converTime(+articleItem?.created)}
         </Text>
         <Text
           bgGradient="linear(to-l, #7928CA, #FF0080)"
@@ -65,7 +78,7 @@ import { useTitle } from '../../../Hooks/useTitle'
           fontSize="2xl"
           fontWeight="extrabold"
         >
-                {data?.title} 
+                {articleItem?.title} 
         </Text>
         <Text
           bgClip="text"
@@ -73,7 +86,7 @@ import { useTitle } from '../../../Hooks/useTitle'
           fontWeight="medium"
           color="gray"
         >
-              {data?.desc}
+              {articleItem?.desc}
         </Text>
        <Button 
           onClick={handleToggleFav}
